@@ -11,6 +11,8 @@ Turtle build in python 3.9.10
     - Turtle it self
 - *master.py*
     - GUI rendering file with PyQt5
+- *examples.py*
+    - File with few fractal examples
 ---
 ## Use
 ```python
@@ -19,9 +21,14 @@ from turtle import Turtle
 # init setup for turtle
 turtle = Turtle(
     start=[0,0],
-    geneticCode="[FL]",
+    word="FL",
     stepLength=10,
-    loopCount=4
+    iteration=1,
+    rules={
+        "F":"F",
+        "L":"L",
+        "R":"R",
+    },
 )
 
 # run doest not return
@@ -31,8 +38,33 @@ turtle.run()
 for step in turtle:
     print(step)
 
+
+# for memory hungry calculation you can use dump to file
+turtle.dump()
 ```
-### Genetic Code
+### Use of examples
+```python
+from turtle import Turtle
+from examples import Examples 
+
+turtle = Turtle(
+    start=[0,0],
+    # here you can choose between example words
+    word=Examples.word["example1"],
+    stepLength=10,
+    iteration=1,
+    # same with rules
+    rules=Examples.rules["example1"],
+)
+
+turtle.run()
+
+for step in turtle:
+    print(step)
+
+```
+for more info look into **Example.py**
+### Rule symbols
 - **F** - forward move by step lenght
 - **R** - turn to right side
 - **L** - turn to left side

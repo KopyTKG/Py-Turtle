@@ -3,14 +3,17 @@ from typing import List
 from copy import deepcopy as copy
 from abstract import Queue
 from direction import Direction
+import uuid
 
 class Turtle:
-    def __init__(self, start: List, geneticCode: str, stepLength=10, loopCount=4):
+    def __init__(self, start: List, word: str, stepLength=10, iteration=4, rules={"F":"F", "L":"L","R":"R"}):
         self.__stepLength = stepLength
         self.__steps = [start]
         self.__direction = Direction.UP
-        self.__geneticCode = self.__queueGeneticCode(geneticCode)
-        self.__loopCount = loopCount
+        self.__rules = rules
+        self.__loopCount = iteration
+        self.__parsedWord = self.__processRules(word)
+        self.__geneticCode = self.__translateMove(self.__parsedWord)
         self.__degreeStr = ""
 
         self.__directionMapLeft = {
@@ -27,27 +30,32 @@ class Turtle:
                 Direction.LEFT: Direction.UP
                }
 
-    def __queueGeneticCode(self, geneticCode) -> Queue:
+    def __processRules(self, word) -> str:
+        for _ in range(self.__loopCount):
+            for symbol in word:
+                word = word.replace(symbol, self.__rules[symbol])
+        return word
+
+    def __translateMove(self, geneticCode) -> Queue:
         valid = ["F","L","R"]
-        memory = Queue(capacity=150) if geneticCode[0] != "[" else Queue(capacity=150,loop= True)
+        memory = Queue(loop=(geneticCode[0] == "["))
         if memory.isLoop():
-            geneticCode = "".join([geneticCode[i] for i in range(1,len(geneticCode)-1)])
+            geneticCode = geneticCode[1:-1]
+
         skipTo = -1
-        for index in range(0, len(geneticCode)):
-            if geneticCode[index] == "[":
-                loop = Queue(capacity=150, loop=True)
+        for index, gene in enumerate(geneticCode):
+            if gene == "[":
+                loop = Queue(loop=True)
                 for loopIndex in range(index, len(geneticCode)):
-                    if geneticCode[loopIndex] ==  "]":
+                    if geneticCode[loopIndex] == "]":
                         skipTo = loopIndex
                         break
                     elif geneticCode[loopIndex] in valid:
                         loop.enqueue(geneticCode[loopIndex])
                 memory.enqueue(loop)
-            elif geneticCode[index] in valid:
-                if skipTo < index:
-                    memory.enqueue(geneticCode[index])
-                else:
-                    pass
+            elif gene in valid and skipTo < index:
+                memory.enqueue(gene)
+
         return memory
 
     def __mainLoop(self, code):
@@ -117,18 +125,34 @@ class Turtle:
             else:
                 raise Exception("not enought steps for iteration")
 
-
+    def dump(self) -> str:
+        try:
+            with open(f"{uuid.uuid4()}.calc", "w") as writer:
+                steps = []
+                for x in range(1, len(self.__steps)):
+                    if x <= len(self.__steps) -1:
+                        steps.append((self.__steps[x-1]+ self.__steps[x]))
+                    else:
+                        raise Exception("not enought steps for iteration")
+                writer.write('\n'.join(map(str,steps)))
+            return "Done"
+        except:
+            raise FileExistsError("dump Not completed")
 
 def main():
     newTurtle = Turtle(
-        start=[0,0],
-        geneticCode="[FL]",
-        stepLength=10,
-        loopCount=4
+        start=[1920, 1080],
+        word="LF",
+        stepLength=1,
+        iteration=2,
+        rules={
+            "F": "FRFLFLFRF",
+            "R": "R",
+            "L": "L" 
+        }
     )
     newTurtle.run()
-    for step in newTurtle:
-        print(step)
+    print(newTurtle.dump())
     
 if __name__ == "__main__":
     main()

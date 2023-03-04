@@ -1,25 +1,19 @@
 from typing import Any
 
+
 class Queue:
-    def __init__(self, start=[], capacity=10, loop=False):
+    def __init__(self, start=[], loop=False):
         self.__loop = loop
         if not start:
             self.__memory = []
         else:
-            if len(start) > capacity:
-                raise Exception("Capacity overflow")
-            else:
-                self.__memory = start
-        self.__capacity = capacity
+            self.__memory = start
 
     def isLoop(self):
         return self.__loop
     
     def enqueue(self, item) -> None:
-        if len(self.__memory) < self.__capacity: 
-            self.__memory.append(item)
-        else:
-            raise Exception("Queue overflow detected")
+        self.__memory.append(item)
     
     def dequeue(self) -> Any:
         return self.__memory.pop(0)
@@ -66,6 +60,7 @@ class Queue:
             return strRet
         except:
             raise Exception("Not iterable type")
+
     def __iter__(self):
         for item in self.__memory:
             yield item

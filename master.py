@@ -3,17 +3,18 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
 from PyQt5.QtCore import Qt
 from turtle import Turtle
+from examples import Examples
 
 
 class Painter(QWidget):
 
-    def __init__(self, title: str):
+    def __init__(self, title: str, turtle: Turtle):
         super().__init__()
         self.__title = title
         self.__border = 50
         self.__width = QApplication.desktop().screenGeometry().width()
         self.__height = QApplication.desktop().screenGeometry().height()
-
+        self.__turtle = turtle
         self.initUI()
 
     def quit(self):
@@ -29,8 +30,8 @@ class Painter(QWidget):
         layout = QVBoxLayout()
         # create Close button
         closeButton = QPushButton('Close',self)
-        closeButton.resize(75, 37.5)
-        closeButton.move(self.__width - (self.__border + 75), self.__border)
+        closeButton.resize(75, 38)
+        closeButton.move(self.__width - 75, 0)
         closeButton.clicked.connect(self.quit)
         closeButton.setStyleSheet("background-color: red; color: white;")
         closeButton.show()
@@ -51,20 +52,13 @@ class Painter(QWidget):
         centerRaduis = 25
         painter.drawEllipse((self.__width /2 )- (centerRaduis/2),(self.__height - self.__border)-centerRaduis,centerRaduis, centerRaduis)
 
-    def paintTurtleMove(self,painter, center):
+    def paintTurtleMove(self,painter):
         pen = QPen()
         pen.setColor(Qt.black)
         pen.setWidth(2)
         painter.setPen(pen)
 
-        turtle = Turtle(
-            start=center,
-            geneticCode="[[R[LL[FRF]]LL][L[RR[FLFR]]RR]]",
-            stepLength= 10,
-            loopCount=4
-        )
-        turtle.run()
-        for step in turtle:
+        for step in self.__turtle:
             painter.drawLine(*step)
 
     def paintEvent(self, event):
@@ -75,24 +69,27 @@ class Painter(QWidget):
         pen.setWidth(5)
         pen.setColor(Qt.black)
         painter.setPen(pen)
-
-        border = [
-            [self.__border, self.__border, self.__width - self.__border, self.__border],
-            [self.__border, self.__height -self.__border, self.__width - self.__border,self.__height - self.__border],
-            [self.__width - self.__border, self.__border, self.__width - self.__border,self.__height - self.__border],
-            [self.__border, self.__border, self.__border,self.__height - self.__border]
-        ]
-
-        for line in border:
-            painter.drawLine(*line)
         
         #self.paintCenter(painter)
-        self.paintTurtleMove(painter, [(self.__width /2 ),(self.__height/2)])
+        self.paintTurtleMove(painter)
         painter.end()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    widget = Painter("Turtle")
 
+    width = QApplication.desktop().screenGeometry().width()
+    height = QApplication.desktop().screenGeometry().height()
+    turtle = Turtle(
+        start=[width - 800, height - 800],
+        word=Examples.word["example1"],
+        stepLength=5,
+        iteration=1,
+        rules=Examples.rules["example1"],
+    )
+    turtle.run()
+
+    widget = Painter("Turtle",turtle)
+
+    print(width, height)
     app.exec_()
  
