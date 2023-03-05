@@ -3,13 +3,13 @@ Turtle build in python 3.9.10
 
 ---
 ### File
-- *abstract.py*
+- [*abstract.py*](./abstract.py)
     - file containig custom Queue class and Fractal class
-- *turtle.py*
+- [*turtle.py*](./turtle.py)
     - Turtle it self
-- *master.py*
+- [*master.py*](./master.py)
     - GUI rendering file with PyQt5
-- *examples.py*
+- [*examples.py*](./examples.py)
     - File with few fractal examples
 ---
 ## Use
@@ -52,6 +52,7 @@ for step in turtle:
 # for memory hungry calculation you can use dump to file
 turtle.dump()
 ```
+#### for use of examples follow this
 ### Use of examples
 ```python
 from turtle import Turtle
@@ -59,12 +60,9 @@ from examples import Examples
 
 turtle = Turtle(
     start=[0,0],
-    # here you can choose between example words
-    word=Examples.word["example1"],
     stepLength=10,
-    iteration=1,
-    # same with rules
-    rules=Examples.rules["example1"],
+    # for use of examples
+    fractal=Examples.example1
 )
 
 turtle.run()
@@ -73,7 +71,7 @@ for step in turtle:
     print(step)
 
 ```
-for more info look into **Example.py**
+for more info look into [**examples.py**](./examples.py)
 ### Rule symbols
 - **F** \ **A** \ **B** \ **C**
      - all symbols used for movement by step lenght
