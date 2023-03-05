@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List
 
 
 class Queue:
@@ -64,3 +64,26 @@ class Queue:
     def __iter__(self):
         for item in self.__memory:
             yield item
+
+
+class Fractal:
+    def __init__(self, word: str, rules={"F":"F","R":"R","L":"L"}, iteration=1):
+        self.__word = word
+        self.__rules = rules
+        self.__iteration = iteration
+    
+    @property
+    def rules(self) -> List:
+        return self.__rules
+    
+    @property
+    def word(self) -> str:
+        return self.__word
+    
+    @property
+    def iteration(self) -> int:
+        return self.__iteration
+
+    @iteration.setter
+    def iteration(self , value: int) -> None:
+        self.__iteration = value

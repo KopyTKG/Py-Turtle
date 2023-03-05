@@ -1,17 +1,30 @@
+from abstract import Fractal
+
 class Examples():
-    word = {
-        "example1":"LF",
-        "example2":"FLFLFLF",
-    }
-    rules = {
-        "example1":{
+    example1 = Fractal(
+        word="LF",
+        rules={
             "F": "FRFLFLFRF",
             "R": "R",
             "L": "L" 
         },
-        "example2":{
-            "F": "FRFFLFFLFLFRFRF",
+        iteration=2
+    )
+    example2 = Fractal(
+        word="FLFLFLF",
+        rules={
+            "F": "FFLFLLFLF",
             "R": "R",
             "L": "L" 
-        }
-    }
+        },
+        iteration=1
+    )
+    example3 = Fractal(
+        word="FLFLFLF",
+        rules={
+            "F": "FRFFRRFRF",
+            "R": "R",
+            "L": "L" 
+        },
+        iteration=1
+    )

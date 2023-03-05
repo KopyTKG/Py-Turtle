@@ -1,18 +1,18 @@
 import re
 from typing import List
 from copy import deepcopy as copy
-from abstract import Queue
+from abstract import Queue, Fractal
 from direction import Direction
 import uuid
 
 class Turtle:
-    def __init__(self, start: List, word: str, stepLength=10, iteration=4, rules={"F":"F", "L":"L","R":"R"}):
+    def __init__(self, start: List,fractal: Fractal, stepLength=10):
         self.__stepLength = stepLength
         self.__steps = [start]
         self.__direction = Direction.UP
-        self.__rules = rules
-        self.__loopCount = iteration
-        self.__parsedWord = self.__processRules(word)
+        self.__rules = fractal.rules
+        self.__loopCount = fractal.iteration
+        self.__parsedWord = self.__processRules(fractal.word)
         self.__geneticCode = self.__translateMove(self.__parsedWord)
         self.__degreeStr = ""
 
@@ -124,20 +124,6 @@ class Turtle:
                 yield self.__steps[x-1]+ self.__steps[x]
             else:
                 raise Exception("not enought steps for iteration")
-
-    def dump(self) -> str:
-        try:
-            with open(f"{uuid.uuid4()}.calc", "w") as writer:
-                steps = []
-                for x in range(1, len(self.__steps)):
-                    if x <= len(self.__steps) -1:
-                        steps.append((self.__steps[x-1]+ self.__steps[x]))
-                    else:
-                        raise Exception("not enought steps for iteration")
-                writer.write('\n'.join(map(str,steps)))
-            return "Done"
-        except:
-            raise FileExistsError("dump Not completed")
 
 def main():
     newTurtle = Turtle(

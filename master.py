@@ -80,11 +80,9 @@ if __name__ == '__main__':
     width = QApplication.desktop().screenGeometry().width()
     height = QApplication.desktop().screenGeometry().height()
     turtle = Turtle(
-        start=[width - 800, height - 800],
-        word=Examples.word["example1"],
-        stepLength=5,
-        iteration=1,
-        rules=Examples.rules["example1"],
+        start=[width - 800, height - 200],
+        stepLength=10,
+        fractal=Examples.example3
     )
     turtle.run()
 
