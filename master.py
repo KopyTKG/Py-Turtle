@@ -16,6 +16,7 @@ class Painter(QWidget):
         self.__height = QApplication.desktop().screenGeometry().height()
         self.__turtle = turtle
         self.initUI()
+        self.__paint = False
 
     def quit(self):
         exit()
@@ -42,22 +43,13 @@ class Painter(QWidget):
         # render
         self.show()
 
-    def paintCenter(self, painter):
-        color = QColor(162,
-                       78,
-                       0)
-        painter.setPen(color)
-        painter.setBrush(color)
-
-        centerRaduis = 25
-        painter.drawEllipse((self.__width /2 )- (centerRaduis/2),(self.__height - self.__border)-centerRaduis,centerRaduis, centerRaduis)
+    
 
     def paintTurtleMove(self,painter):
         pen = QPen()
         pen.setColor(Qt.black)
         pen.setWidth(2)
         painter.setPen(pen)
-
         for step in self.__turtle:
             painter.drawLine(*step)
 
@@ -69,8 +61,6 @@ class Painter(QWidget):
         pen.setWidth(5)
         pen.setColor(Qt.black)
         painter.setPen(pen)
-        
-        #self.paintCenter(painter)
         self.paintTurtleMove(painter)
         painter.end()
 
@@ -80,9 +70,10 @@ if __name__ == '__main__':
     width = QApplication.desktop().screenGeometry().width()
     height = QApplication.desktop().screenGeometry().height()
     turtle = Turtle(
-        start=[width - 800, height - 200],
-        stepLength=10,
-        fractal=Examples.example3
+        start=[0, height],
+        #start=[0,0],
+        stepLength=4,
+        fractal=Examples.example1
     )
     turtle.run()
 

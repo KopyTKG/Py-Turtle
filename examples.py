@@ -2,29 +2,65 @@ from abstract import Fractal
 
 class Examples():
     example1 = Fractal(
-        word="LF",
+        word="+F",
         rules={
-            "F": "FRFLFLFRF",
-            "R": "R",
-            "L": "L" 
+            "F": "F-F+F+F-F",
+            "-": "-",
+            "+": "+" 
         },
-        iteration=2
+        turnAngle=90,
+        iteration=6
     )
     example2 = Fractal(
-        word="FLFLFLF",
+        word="F+F+F+F",
         rules={
-            "F": "FFLFLLFLF",
-            "R": "R",
-            "L": "L" 
+            "F": "FF+F++F+F",
+            "-": "-",
+            "+": "+" 
         },
-        iteration=1
+        turnAngle=90,
+        iteration=5
     )
     example3 = Fractal(
-        word="FLFLFLF",
+        word="F+F+F+F",
         rules={
-            "F": "FRFFRRFRF",
-            "R": "R",
-            "L": "L" 
+            "F": "F-FF--F-F",
+            "-": "-",
+            "+": "+" 
         },
-        iteration=1
+        turnAngle=90,
+        iteration=8
     )
+    example4 = Fractal(
+        word="B",
+        rules={
+            "A": "B-A-B",
+            "B": "A+B+A",
+            "-": "-",
+            "+": "+",
+        },
+        iteration=10,
+        startAngle=60,
+        turnAngle=60
+    )
+    example5 = Fractal(
+        word="F+F+F+F",
+        rules={
+            "F": "FF+F+F+F+FF",
+            "-": "-",
+            "+": "+",
+        },
+        iteration=5,
+        turnAngle=90
+    )
+    example6 = Fractal(
+        word="F-F-F-F",
+        rules={
+            "F": "FF-F+F-F-FF",
+            "-": "-",
+            "+": "+",
+        },
+        iteration=5,
+        turnAngle=90
+    )
+    exampleList = [example1,example2,example3,example4,example5,example6]

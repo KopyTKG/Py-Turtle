@@ -1,5 +1,5 @@
 from typing import Any, List
-
+from math import pi, radians
 
 class Queue:
     def __init__(self, start=[], loop=False):
@@ -8,27 +8,12 @@ class Queue:
             self.__memory = []
         else:
             self.__memory = start
-
-    def isLoop(self):
-        return self.__loop
     
     def enqueue(self, item) -> None:
         self.__memory.append(item)
     
     def dequeue(self) -> Any:
         return self.__memory.pop(0)
-
-    def front(self) -> Any:
-        if self.isEmpty():
-            return None
-        else:
-            return(self.__memory[0])
-    
-    def rear(self) -> Any:
-        if self.isEmpty():
-            return None
-        else:
-            return(self.__memory[-1])
     
     def isEmpty(self) -> bool:
         return not self.__memory
@@ -67,11 +52,13 @@ class Queue:
 
 
 class Fractal:
-    def __init__(self, word: str, rules={"F":"F","R":"R","L":"L"}, iteration=1):
+    def __init__(self, word: str,turnAngle: int,startAngle=90, rules={"F":"F","R":"R","L":"L"}, iteration=1):
         self.__word = word
         self.__rules = rules
         self.__iteration = iteration
-    
+        self.__startAngle = (pi* startAngle) / 180
+        self.__turnAngle = (pi* turnAngle) / 180
+
     @property
     def rules(self) -> List:
         return self.__rules
@@ -79,7 +66,15 @@ class Fractal:
     @property
     def word(self) -> str:
         return self.__word
-    
+
+    @property
+    def startAngle(self) -> radians:
+        return self.__startAngle
+
+    @property
+    def turnAngle(self) -> radians:
+        return self.__turnAngle
+
     @property
     def iteration(self) -> int:
         return self.__iteration
@@ -87,3 +82,7 @@ class Fractal:
     @iteration.setter
     def iteration(self , value: int) -> None:
         self.__iteration = value
+    
+    @turnAngle.setter
+    def turnAngle(self , value: int) -> None:
+        self.__turnAngle = (value * pi) / 180

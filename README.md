@@ -4,9 +4,7 @@ Turtle build in python 3.9.10
 ---
 ### File
 - *abstract.py*
-    - file containig custom Queue class
-- *direction.py*
-    - Emun needed for Turtle
+    - file containig custom Queue class and Fractal class
 - *turtle.py*
     - Turtle it self
 - *master.py*
@@ -17,20 +15,32 @@ Turtle build in python 3.9.10
 ## Use
 ```python
 from turtle import Turtle
+from fractal import Fractal
+
+#define fractal
+newFractal = Fractal(
+    #starting word
+    word="+F",
+    #rewriting rules
+    rules={
+        "F": "F-F+F+F-F",
+        "-": "-",
+        "+": "+" 
+    },
+    #turn angle
+    turnAngle=90,
+    #iterations (choose wisly)
+    iteration=6,
+    #if needed you can change starting angle
+    startAngle=90 #default 90
+)
 
 # init setup for turtle
 turtle = Turtle(
     start=[0,0],
-    word="FL",
     stepLength=10,
-    iteration=1,
-    rules={
-        "F":"F",
-        "L":"L",
-        "R":"R",
-    },
+    fractal=newFractal
 )
-
 # run doest not return
 turtle.run()
 
@@ -65,9 +75,8 @@ for step in turtle:
 ```
 for more info look into **Example.py**
 ### Rule symbols
-- **F** - forward move by step lenght
-- **R** - turn to right side
-- **L** - turn to left side
-- **[** - begin loop
-- **]** - end loop
+- **F** \ **A** \ **B** \ **C**
+     - all symbols used for movement by step lenght
+- **-** - turn to right side
+- **+** - turn to left side
 ---

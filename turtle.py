@@ -1,122 +1,75 @@
-import re
+import re, string
 from typing import List
 from copy import deepcopy as copy
 from abstract import Queue, Fractal
-from direction import Direction
-import uuid
+from examples import Examples
+from math import cos, sin, pi
 
 class Turtle:
     def __init__(self, start: List,fractal: Fractal, stepLength=10):
+        # default static values
+        self.__validMoveCommands = ["F","A","B","C"]
+        self.__validSymbols = ["+","-","[","]"]+ self.__validMoveCommands
+        # user set values
         self.__stepLength = stepLength
         self.__steps = [start]
-        self.__direction = Direction.UP
+        # fractal set values
         self.__rules = fractal.rules
+        self.__forwardAngle = -fractal.startAngle
         self.__loopCount = fractal.iteration
-        self.__parsedWord = self.__processRules(fractal.word)
-        self.__geneticCode = self.__translateMove(self.__parsedWord)
-        self.__degreeStr = ""
+        self.__turnAngle = fractal.turnAngle
+        # modified word with use of the rules
+        self.__modifiedWord = self.__processRules(fractal.word)
+        # parsed values
+        self.__queuedWord = self.__translateMove(self.__modifiedWord)
+        
 
-        self.__directionMapLeft = {
-                Direction.UP: Direction.LEFT,
-                Direction.LEFT: Direction.DOWN,
-                Direction.DOWN: Direction.RIGHT,
-                Direction.RIGHT: Direction.UP
-               }
-
-        self.__directionMapRight = {
-                Direction.UP: Direction.RIGHT,
-                Direction.RIGHT: Direction.DOWN,
-                Direction.DOWN: Direction.LEFT,
-                Direction.LEFT: Direction.UP
-               }
-
+    # Rule processing fuction to replace symbols with use of the rules
     def __processRules(self, word) -> str:
+        translation = word.maketrans(self.__rules)
         for _ in range(self.__loopCount):
-            for symbol in word:
-                word = word.replace(symbol, self.__rules[symbol])
+            #print(word.translate(translation))
+            word = word.translate(translation)
+            #for symbol in word:
+            #    word = word.replace(symbol, self.__rules[symbol])
         return word
 
+    # Takes modified word to translate it into queue of symbols
     def __translateMove(self, geneticCode) -> Queue:
-        valid = ["F","L","R"]
-        memory = Queue(loop=(geneticCode[0] == "["))
-        if memory.isLoop():
-            geneticCode = geneticCode[1:-1]
-
-        skipTo = -1
+        memory = Queue()
         for index, gene in enumerate(geneticCode):
-            if gene == "[":
-                loop = Queue(loop=True)
-                for loopIndex in range(index, len(geneticCode)):
-                    if geneticCode[loopIndex] == "]":
-                        skipTo = loopIndex
-                        break
-                    elif geneticCode[loopIndex] in valid:
-                        loop.enqueue(geneticCode[loopIndex])
-                memory.enqueue(loop)
-            elif gene in valid and skipTo < index:
+            if gene in self.__validSymbols:
                 memory.enqueue(gene)
-
         return memory
 
-    def __mainLoop(self, code):
-        for position in range(len(code)):
-            if type(code.front()) == Queue:
-                if code.front().isLoop():
-                    front = code.dequeue()
-                    for _ in range(self.__loopCount):
-                        for innerPosition in range(len(front)):
-                            memory = copy(front)
-                            while not memory.isEmpty():
-                                self.__doMove(memory.dequeue())
-                else:
-                    front = code.dequeue()
-                    for innerPosition in range(len(front)):
-                        memory = copy(front)
-                        while not memory.isEmpty():
-                                self.__doMove(memory.dequeue())
-            else:
-                self.__doMove(code.dequeue())
-
+    # main function
     def run(self) -> List:
-        activeLoop = False
-        if not self.__geneticCode.isLoop():
-            self.__mainLoop(self.__geneticCode)
-        else:
-            for _ in range(self.__loopCount):
-                self.__mainLoop(copy(self.__geneticCode))
-        return self.__steps
+        for position in range(len(self.__queuedWord)):
+            self.__doMove(self.__queuedWord.dequeue())
 
+    # Filter function for word symbols
     def __doMove(self, symbol):
-        if symbol == "L":
+        if symbol == "+":
             self.__turnLeft()
-        if symbol == "R":
+        if symbol == "-":
             self.__turnRight()
-        if symbol == "F":
+        if symbol in self.__validMoveCommands:
             self.__move()
         
+    # Move function
     def __move(self) -> None:
         oldPosition = copy(self.__steps[-1])
-        if self.__direction == Direction.UP:
-            newPosition = [oldPosition[0], oldPosition[1]-self.__stepLength]
-            self.__steps.append(newPosition)
+        newX = oldPosition[0] + (self.__stepLength * cos(self.__forwardAngle))
+        newY = oldPosition[1] + (self.__stepLength * sin(self.__forwardAngle))
+        newPosition = [newX, newY]
+        self.__steps.append(newPosition)
 
-        if self.__direction == Direction.DOWN:
-            newPosition = [oldPosition[0], oldPosition[1]+self.__stepLength]
-            self.__steps.append(newPosition)
-
-        if self.__direction == Direction.LEFT:
-            newPosition = [oldPosition[0]-self.__stepLength, oldPosition[1]]
-            self.__steps.append(newPosition)
-
-        if self.__direction == Direction.RIGHT:
-            newPosition = [oldPosition[0]+self.__stepLength, oldPosition[1]]
-            self.__steps.append(newPosition)
-
+    # Turn functions for turtles head
     def __turnLeft(self) -> None:
-        self.__direction = self.__directionMapLeft[self.__direction]
+        self.__forwardAngle += self.__turnAngle
 
     def __turnRight(self) -> None:
-        self.__direction = self.__directionMapRight[self.__direction]
+        self.__forwardAngle -= self.__turnAngle
 
     def __iter__(self) -> List:
         for x in range(1, len(self.__steps)):
@@ -127,18 +80,11 @@ class Turtle:
 
 def main():
     newTurtle = Turtle(
-        start=[1920, 1080],
-        word="LF",
-        stepLength=1,
-        iteration=2,
-        rules={
-            "F": "FRFLFLFRF",
-            "R": "R",
-            "L": "L" 
-        }
+        start=[0, 0],
+        stepLength=10,
+        fractal=Examples.example5
     )
     newTurtle.run()
-    print(newTurtle.dump())
-    
+
 if __name__ == "__main__":
     main()
