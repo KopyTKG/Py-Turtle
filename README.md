@@ -3,19 +3,21 @@ Turtle build in python 3.9.10
 
 ---
 ### File
-- [*abstract.py*](./abstract.py)
+- [*abstract.py*](./core/abstract.py)
     - file containig custom Queue class and Fractal class
-- [*turtle.py*](./turtle.py)
+- [*turtle.py*](./core/turtle.py)
     - Turtle it self
 - [*master.py*](./master.py)
     - GUI rendering file with PyQt5
-- [*examples.py*](./examples.py)
+- [*examples.py*](./exmaples/examples.py)
     - File with few fractal examples
+- [*DOLsystem.py*](./exmaples/DOLsystem.py)
+    - File with few fractal DOL-systems examples (**The iteration needs to be edited by user**)
 ---
 ## Use
 ```python
-from turtle import Turtle
-from fractal import Fractal
+from core.turtle import Turtle
+from core.abstract import Fractal
 
 #define fractal
 newFractal = Fractal(
@@ -48,20 +50,17 @@ turtle.run()
 for step in turtle:
     print(step)
 
-
-# for memory hungry calculation you can use dump to file
-turtle.dump()
 ```
 #### for use of examples follow this
 ### Use of examples
 ```python
-from turtle import Turtle
-from examples import Examples 
+from core.turtle import Turtle
+from examples.examples import Examples, DOLsystem
 
 turtle = Turtle(
     start=[0,0],
     stepLength=10,
-    # for use of examples
+    # for use of examples or DOLsystem
     fractal=Examples.example1
 )
 

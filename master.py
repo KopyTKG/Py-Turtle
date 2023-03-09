@@ -2,9 +2,9 @@ import sys, time
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
 from PyQt5.QtCore import Qt
-from turtle import Turtle
-from examples import Examples
-
+from core.turtle import Turtle
+from examples.examples import Examples
+from examples.DOLsystem import DOLsystem
 
 class Painter(QWidget):
 
@@ -69,11 +69,15 @@ if __name__ == '__main__':
 
     width = QApplication.desktop().screenGeometry().width()
     height = QApplication.desktop().screenGeometry().height()
+
+    usedFractal = DOLsystem.QuadraticSnowFlakeCurve
+    usedFractal.iteration = 4
+
     turtle = Turtle(
-        start=[0, height],
+        start=[width/2, height/2],
         #start=[0,0],
-        stepLength=4,
-        fractal=Examples.example1
+        stepLength=5,
+        fractal=usedFractal
     )
     turtle.run()
 

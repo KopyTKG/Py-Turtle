@@ -50,7 +50,6 @@ class Queue:
         for item in self.__memory:
             yield item
 
-
 class Fractal:
     def __init__(self, word: str,turnAngle: int,startAngle=90, rules={"F":"F","R":"R","L":"L"}, iteration=1):
         self.__word = word

@@ -1,16 +1,6 @@
-from abstract import Fractal
+from core.abstract import Fractal
 
 class Examples():
-    example1 = Fractal(
-        word="+F",
-        rules={
-            "F": "F-F+F+F-F",
-            "-": "-",
-            "+": "+" 
-        },
-        turnAngle=90,
-        iteration=6
-    )
     example2 = Fractal(
         word="F+F+F+F",
         rules={
@@ -63,4 +53,26 @@ class Examples():
         iteration=5,
         turnAngle=90
     )
-    exampleList = [example1,example2,example3,example4,example5,example6]
+    example7 = Fractal(
+        word="F+F+F+F",
+        rules={
+            "F": "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF",
+            "-": "-",
+            "+": "+",
+            "f": "ffffff",
+        },
+        iteration=2,
+        turnAngle=-90
+    )
+
+    exampleTest = Fractal(
+        word="fFF",
+        rules={
+            "F": "F",
+            "-": "-",
+            "+": "+",
+            "f": "f",
+        },
+        iteration=2,
+        turnAngle=-90
+    )
