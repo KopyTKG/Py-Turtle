@@ -1,15 +1,15 @@
-import re, string
+import re, string, os, yaml
 from typing import List
 from copy import deepcopy as copy
 from core.abstract import Queue, Fractal, Stack, Status
 from math import cos, sin, pi
 
 class Turtle:
-    def __init__(self, start: List,fractal: Fractal, stepLength=10,):
-        # default static values
-        self.__validMoveCommands = ["F","A","B","C","X"]
-        self.__validSkipCommands = ["f"]
-        self.__validSymbols = ["+","-","[","]",]+ self.__validMoveCommands+ self.__validSkipCommands
+    def __init__(self, start: List,fractal: Fractal, stepLength=10):
+        self.__configFile = f"{os.getcwd()}/config/config.yaml"
+        with open(self.__configFile, "r") as yml:
+            self.__config = yaml.safe_load(yml)
+
         # user set values
         self.__stepLength = stepLength
         self.__steps = []
@@ -38,8 +38,7 @@ class Turtle:
     def __translateMove(self, geneticCode) -> Queue:
         memory = Queue()
         for index, gene in enumerate(geneticCode):
-            if gene in self.__validSymbols:
-                memory.enqueue(gene)
+            memory.enqueue(gene)
         return memory
 
     # main function
@@ -50,20 +49,19 @@ class Turtle:
 
     # Filter function for word symbols
     def __doMove(self, symbol):
-        if symbol == "+":
+        if symbol in self.__config["commands"]["turn"]["left"]:
             self.__turnLeft()
-        if symbol == "-":
+        if symbol in self.__config["commands"]["turn"]["right"]:
             self.__turnRight()
-        if symbol in self.__validMoveCommands or symbol in self.__validSkipCommands:
+        if symbol in self.__config["commands"]["move"] or symbol in self.__config["commands"]["skip"]:
             self.__move(symbol)
-        if symbol == "[":
+        if symbol in self.__config["commands"]["memory"]["save"]:
             self.__saveTurtleStep()
-        if symbol == "]":
+        if symbol in self.__config["commands"]["memory"]["load"]:
             self.__loadTurtleStep()
         
     # Move function
     def __move(self, symbol) -> None:
-        print(self.__lastPoint)
         # Get current position
         self.__lastPoint.append(self.__lastPosition)
 
@@ -73,7 +71,7 @@ class Turtle:
         newPosition = [newX, newY]
 
         # Check if the pen is down
-        if symbol in self.__validMoveCommands:
+        if symbol in self.__config["commands"]["move"]:
             self.__lastPoint.append(newPosition)
             self.__steps.append(self.__lastPoint)
         # reset lastPoint and last position

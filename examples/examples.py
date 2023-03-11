@@ -105,6 +105,6 @@ class Examples():
             "-": "-",
             "+": "+"
         },
-        iteration=6,
+        iteration=5,
         turnAngle=-22.5
     )

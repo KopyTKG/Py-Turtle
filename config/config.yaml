@@ -1,0 +1,11 @@
+# turtle commands
+commands:
+  move: ["F","A","B","C","X"]
+  skip: ["f", "a","b","c","x"]
+  turn: 
+    left: ["+","L"]
+    right: ["-","R"]
+  memory:
+    save: ["[","{","(","<"]
+    load: ["]","}",")",">"]
+
