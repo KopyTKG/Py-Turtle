@@ -1,6 +1,20 @@
 from typing import Any, List
 from math import pi, radians
 
+
+class Status:
+    def __init__(self, position: List, angle: int): 
+        self.__position = position
+        self.__angle = angle
+
+    @property
+    def angle(self):
+        return self.__angle
+
+    @property
+    def position(self):
+        return self.__position
+
 class Queue:
     def __init__(self, start=[], loop=False):
         self.__loop = loop
@@ -49,6 +63,28 @@ class Queue:
     def __iter__(self):
         for item in self.__memory:
             yield item
+
+class Stack:
+    def __init__(self, start=[]):
+        self.__memory = start
+
+    def push(self, item) -> None:
+        self.__memory.append(item)
+
+    def pop(self) -> Any:
+        return self.__memory.pop(len(self.__memory)-1)
+
+    def peek(self) -> Any:
+        return self.__memory[-1]
+
+    def isEmpty(self) -> bool:
+        return not self.__memory
+
+    def __len__(self):
+        return len(self.__memory)
+    
+    def __str__(self):
+        return str(self.__memory)
 
 class Fractal:
     def __init__(self, word: str,turnAngle: int,startAngle=90, rules={"F":"F","R":"R","L":"L"}, iteration=1):

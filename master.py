@@ -74,10 +74,10 @@ if __name__ == '__main__':
     usedFractal.iteration = 4
 
     turtle = Turtle(
-        start=[width/2, height/2],
+        start=[width/2, height-100],
         #start=[0,0],
-        stepLength=5,
-        fractal=usedFractal
+        stepLength=12,
+        fractal=Examples.flowerTest3
     )
     turtle.run()
 

@@ -19,7 +19,7 @@ class Examples():
             "+": "+" 
         },
         turnAngle=90,
-        iteration=8
+        iteration=5
     )
     example4 = Fractal(
         word="B",
@@ -66,13 +66,45 @@ class Examples():
     )
 
     exampleTest = Fractal(
-        word="fFF",
+        word="F",
         rules={
-            "F": "F",
+            "F": "F[+F]F[-F][F]",
             "-": "-",
-            "+": "+",
-            "f": "f",
+            "+": "+"
         },
-        iteration=2,
-        turnAngle=-90
+        iteration=5,
+        turnAngle=-20
+    )
+    flowerTest = Fractal(
+        word="X",
+        rules={
+            "X": "F[+X]F[-X]+X",
+            "F": "FF",
+            "-": "-",
+            "+": "+"
+        },
+        iteration=7,
+        turnAngle=-20
+    )
+
+    flowerTest2 = Fractal(
+        word="X",
+        rules={
+            "X": "F[+X][-X]FX",
+            "F": "FF",
+            "-": "-",
+            "+": "+"
+        },
+        iteration=7,
+        turnAngle=-25.7
+    )
+    flowerTest3 = Fractal(
+        word="F",
+        rules={
+            "F": "FF-[-F+F+F]+[+F-F-F]",
+            "-": "-",
+            "+": "+"
+        },
+        iteration=6,
+        turnAngle=-22.5
     )
