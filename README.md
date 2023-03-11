@@ -80,6 +80,7 @@ for step in turtle:
 - **+** \ **L** - turn to left side
 - **[** - turtle save symbol
 - **]** - turtle load symbol
+
 for more info about commands look into [**config.yaml**](./config/config.yaml)
 
 ---
