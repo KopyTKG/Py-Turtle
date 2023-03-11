@@ -70,10 +70,16 @@ for step in turtle:
     print(step)
 
 ```
-for more info look into [**examples.py**](./examples.py)
+---
 ### Rule symbols
-- **F** \ **A** \ **B** \ **C**
-     - all symbols used for movement by step lenght
-- **-** - turn to right side
-- **+** - turn to left side
+- **F** \ **A** \ **B** \ **C** \ **X**
+     - all symbols used for movement by step lenght and Draw line
+- **f** \ **a** \ **b** \ **c** \ **x**
+    - all symbols used to just move forward
+- **-** \ **R** - turn to right side
+- **+** \ **L** - turn to left side
+- **[** - turtle save symbol
+- **]** - turtle load symbol
+for more info about commands look into [**config.yaml**](./config/config.yaml)
+
 ---
